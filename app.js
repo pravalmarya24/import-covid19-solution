@@ -87,7 +87,7 @@ app.post("/districts/", async function (request, response) {
          ${cases},
          ${cured},
          ${active},
-        '${deaths}',
+        '${deaths}'
         );`;
   await db.run(postDistrictQuery);
   response.send("District Successfully Added");
@@ -101,8 +101,7 @@ app.get("/districts/:districtId/", async function (request, response) {
             FROM 
                 district
             WHERE 
-              district_id = ${districtId};
-    `;
+              district_id = ${districtId};`;
   let districtIdArray = await db.get(getDistrictIdQuery);
   response.send(convertDistrictDbObjectToResponseObject(districtIdArray));
 });
@@ -155,7 +154,7 @@ app.get("/districts/:districtId/details/", async function (request, response) {
             district_id = ${districtId};
     `;
   let arrayDis = await db.get(getDistrictQuery);
-  response.send({ StateName: arrayDis.state_name });
+  response.send({ stateName: arrayDis.state_name });
 });
 
 app.get("/states/:stateId/stats/", async (request, response) => {

@@ -1,6 +1,6 @@
 GET http://localhost:3000/states/
 ###
-GET http://localhost:3000/states/1/
+GET http://localhost:3000/states/3/
 ###
 POST http://localhost:3000/districts/
 Content-Type: application/json
