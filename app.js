@@ -70,16 +70,16 @@ app.get("/states/:stateId/", async function (request, response) {
         WHERE 
             state_id = ${stateId};
     `;
-  let statesIdArray = await db.all(getStatesIdQuery);
+  let statesIdArray = await db.get(getStatesIdQuery);
   response.send(convertStateDbObjectToResponseObject(statesIdArray));
 });
 
 //Create a district in the district table
 app.post("/districts/", async function (request, response) {
-  let { districtName, stateId, cases, cured, active, deaths } = request.body;
+  let { stateId, districtName, cases, cured, active, deaths } = request.body;
   let postDistrictQuery = `
         INSERT INTO
-        district (district_name,state_id,cases,cured,active,deaths)
+        district (state_id,district_name,cases,cured,active,deaths)
         VALUES 
         (
         '${districtName}',
@@ -148,14 +148,14 @@ app.get("/districts/:districtId/details/", async function (request, response) {
   let getDistrictQuery = `
         SELECT state_name
         FROM
-        district
+            district
         NATURAL JOIN
             state
         WHERE
             district_id = ${districtId};
     `;
   let arrayDis = await db.get(getDistrictQuery);
-  response.send({ stateName: state.state_name });
+  response.send({ StateName: arrayDis.state_name });
 });
 
 app.get("/states/:stateId/stats/", async (request, response) => {
@@ -170,7 +170,7 @@ app.get("/states/:stateId/stats/", async (request, response) => {
       district
     WHERE
       state_id=${stateId};`;
-  const stats = await database.get(getStateStatsQuery);
+  const stats = await db.get(getStateStatsQuery);
   response.send({
     totalCases: stats["SUM(cases)"],
     totalCured: stats["SUM(cured)"],
